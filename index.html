@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belle Bloom - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="notification-container"></div>
+
+    <header>
+        <div class="header-top">
+            <div class="auth-buttons">
+                <a href="login.html" id="login-btn" class="btn-primary">Member Log in</a>
+                <div id="user-menu" class="hidden">
+                    <button onclick="logout()">Log out</button>
+                </div>
+            </div>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="brand-wrapper">
+                <div class="logo-container">
+                    <img src="images/logo.png" alt="Belle Bloom Logo" class="logo">
+                </div>
+                <div class="brand-info">
+                    <h1>Belle Bloom</h1>
+                    <p class="tagline">Bloom Your Own Way.</p>
+                </div>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="orders.html">Order History</a></li>
+                    <li class="cart-nav">
+                        <a href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-count">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Welcome to Belle Bloom</h2>
+            <p>Discover our exclusive swimwear collection designed to make you bloom.</p>
+            <a href="products.html" class="cta-btn">Shop Now</a>
+        </section>
+
+        <section class="lookbook-section" style="margin-top: 60px; padding: 0 5%;">
+            <h2 class="section-title" style="text-align: center;">Summer Lookbook '24</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                <div style="grid-column: span 2; height: 400px; overflow: hidden;">
+                    <img src="images/671216493_932603073005065_1891771795829181148_n.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Lookbook 1">
+                </div>
+                <div style="height: 400px; overflow: hidden;">
+                    <img src="images/671543235_987105527214332_99567756923640868_n.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Lookbook 2">
+                </div>
+                <div style="height: 300px; overflow: hidden;">
+                    <img src="images/670475691_1480556513608529_7492707890442767016_n.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Lookbook 3">
+                </div>
+                <div style="grid-column: span 2; height: 300px; overflow: hidden;">
+                    <img src="images/670361529_1266434368987922_1851916843251317474_n.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Lookbook 4">
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; max-width: 500px; margin: 0 auto 20px;">"Sun, sand, and the perfect swimwear. Discover your summer essence with Belle Bloom."</p>
+                <a href="products.html" class="cta-btn">Explore Collection</a>
+            </div>
+        </section>
+
+        <section class="reviews-section" style="margin-top: 80px; padding: 50px 5%; background: rgba(252, 228, 236, 0.3);">
+            <h2 class="section-title" style="text-align: center;">Customer Stories</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px;">
+                <div style="background: var(--white); padding: 30px; text-align: center; border: 1px solid rgba(62, 39, 35, 0.05);">
+                    <div style="color: #FFD700; margin-bottom: 10px;">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p style="font-style: italic; margin-bottom: 15px; font-size: 0.9rem;">"The quality is absolutely stunning. I felt so confident on my beach trip! Belle Bloom is my new favorite for swimwear."</p>
+                    <p style="font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px;">- Maria Santos</p>
+                </div>
+                <div style="background: var(--white); padding: 30px; text-align: center; border: 1px solid rgba(62, 39, 35, 0.05);">
+                    <div style="color: #FFD700; margin-bottom: 10px;">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p style="font-style: italic; margin-bottom: 15px; font-size: 0.9rem;">"Fast delivery and perfect fit. The colors are even more beautiful in person. Highly recommend!"</p>
+                    <p style="font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px;">- Anna Gomez</p>
+                </div>
+                <div style="background: var(--white); padding: 30px; text-align: center; border: 1px solid rgba(62, 39, 35, 0.05);">
+                    <div style="color: #FFD700; margin-bottom: 10px;">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p style="font-style: italic; margin-bottom: 15px; font-size: 0.9rem;">"Beautifully crafted pieces. You can really tell they are made with love. Can't wait for my next order!"</p>
+                    <p style="font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px;">- Elena Reyes</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2 class="section-title" style="text-align: center;">Why Choose Us?</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; margin-top: 50px;">
+                <div style="text-align: center;">
+                    <i class="fas fa-heart" style="font-size: 2rem; color: #8D6E63; margin-bottom: 25px;"></i>
+                    <h3 style="text-transform: uppercase; letter-spacing: 2px; font-size: 1rem; margin-bottom: 15px;">Made with Love</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Every piece is carefully selected to ensure you feel confident and beautiful.</p>
+                </div>
+                <div style="text-align: center;">
+                    <i class="fas fa-star" style="font-size: 2rem; color: #8D6E63; margin-bottom: 25px;"></i>
+                    <h3 style="text-transform: uppercase; letter-spacing: 2px; font-size: 1rem; margin-bottom: 15px;">Premium Quality</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">We use high-quality fabrics that are both comfortable and durable for your beach adventures.</p>
+                </div>
+                <div style="text-align: center;">
+                    <i class="fas fa-shipping-fast" style="font-size: 2rem; color: #8D6E63; margin-bottom: 25px;"></i>
+                    <h3 style="text-transform: uppercase; letter-spacing: 2px; font-size: 1rem; margin-bottom: 15px;">Fast Delivery</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Get your favorite swimwear delivered quickly across the Philippines.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Belle Bloom. All rights reserved.</p>
+        <p>Email: majhoanabellebaletin@gmail.com</p>
+    </footer>
+
+    <script src="cart.js"></script>
+</body>
+</html>

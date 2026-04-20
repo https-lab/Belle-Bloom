@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belle Bloom - Products</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="notification-container"></div>
+
+    <header>
+        <div class="header-top">
+            <div class="auth-buttons">
+                <a href="login.html" id="login-btn" class="btn-primary">Member Log in</a>
+                <div id="user-menu" class="hidden">
+                    <button onclick="logout()">Log out</button>
+                </div>
+            </div>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="brand-wrapper">
+                <div class="logo-container">
+                    <img src="images/logo.png" alt="Belle Bloom Logo" class="logo">
+                </div>
+                <div class="brand-info">
+                    <h1>Belle Bloom</h1>
+                    <p class="tagline">Bloom Your Own Way.</p>
+                </div>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="orders.html">Order History</a></li>
+                    <li class="cart-nav">
+                        <a href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-count">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <h2 class="section-title">Our Collection</h2>
+        <div id="product-grid" class="product-grid">
+            <!-- Products will be injected here by cart.js -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Belle Bloom. All rights reserved.</p>
+        <p>Email: majhoanabellebaletin@gmail.com</p>
+    </footer>
+
+    <script src="cart.js"></script>
+</body>
+</html>
