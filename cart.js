@@ -28,15 +28,21 @@ let orderHistory = JSON.parse(localStorage.getItem('belle_bloom_history')) || []
 
 // Shared DOM Elements (Check if they exist on current page)
 const notificationContainer = document.getElementById('notification-container');
-const cartCount = document.getElementById('cart-count');
+const cartCountEls = document.querySelectorAll('#cart-count');
 const loginBtn = document.getElementById('login-btn');
 const userMenu = document.getElementById('user-menu');
 const welcomeMsg = document.getElementById('welcome-msg');
+const burgerBtn = document.querySelector('.burger-btn');
+const navEl = document.querySelector('.header-main nav');
+
+let activePreviewProductId = null;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     updateAuthState();
     updateCartUI();
+    setupMobileMenu();
+    setupProductPreviewModal();
     
     // Page specific initializations
     const path = window.location.pathname;
@@ -96,9 +102,11 @@ function setupLoginForm() {
 
 // Cart Management
 function updateCartUI() {
-    if (!cartCount) return;
+    if (!cartCountEls.length) return;
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCount.innerText = totalItems;
+    cartCountEls.forEach((el) => {
+        el.innerText = totalItems;
+    });
 }
 
 function addToCart(productId) {
@@ -146,7 +154,7 @@ function renderProducts() {
     if (!grid) return;
     grid.innerHTML = products.map(p => `
         <div class="product-card">
-            <img src="${p.image}" alt="${p.name}">
+            <img src="${p.image}" alt="${p.name}" role="button" tabindex="0" onclick="openProductPreview(${p.id})" onkeydown="handlePreviewKey(event, ${p.id})">
             <div class="product-info">
                 <h3>${p.name}</h3>
                 <span class="price">₱${p.price.toFixed(2)}</span>
@@ -295,3 +303,107 @@ function renderHistory() {
         </div>
     `).join('');
 }
+
+function setupMobileMenu() {
+    if (!burgerBtn || !navEl) return;
+
+    burgerBtn.addEventListener('click', () => {
+        const isOpen = navEl.classList.toggle('nav-open');
+        burgerBtn.classList.toggle('active', isOpen);
+        burgerBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navEl.addEventListener('click', (event) => {
+        if (event.target.tagName === 'A' && window.innerWidth <= 768) {
+            navEl.classList.remove('nav-open');
+            burgerBtn.classList.remove('active');
+            burgerBtn.setAttribute('aria-expanded', 'false');
+        }
+    });
+}
+
+function setupProductPreviewModal() {
+    if (document.getElementById('product-preview-modal')) return;
+
+    const modal = document.createElement('div');
+    modal.id = 'product-preview-modal';
+    modal.className = 'product-preview-modal hidden';
+    modal.innerHTML = `
+        <div class="preview-backdrop" onclick="closeProductPreview()"></div>
+        <div class="preview-content" role="dialog" aria-modal="true" aria-label="Product preview">
+            <button type="button" class="preview-close-btn" onclick="closeProductPreview()" aria-label="Close preview">&times;</button>
+            <img id="preview-image" src="" alt="">
+            <h3 id="preview-name"></h3>
+            <p id="preview-price"></p>
+            <div class="preview-qty-controls">
+                <button type="button" class="qty-btn" onclick="updatePreviewQty(-1)">-</button>
+                <span id="preview-qty-value">0</span>
+                <button type="button" class="qty-btn" onclick="updatePreviewQty(1)">+</button>
+            </div>
+            <button type="button" class="add-to-cart-btn preview-add-btn" onclick="addActivePreviewToCart()">Add to Cart</button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+
+function handlePreviewKey(event, productId) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openProductPreview(productId);
+    }
+}
+
+function openProductPreview(productId) {
+    const product = products.find(p => p.id === productId);
+    const modal = document.getElementById('product-preview-modal');
+    if (!product || !modal) return;
+
+    activePreviewProductId = productId;
+    document.getElementById('preview-image').src = product.image;
+    document.getElementById('preview-image').alt = product.name;
+    document.getElementById('preview-name').innerText = product.name;
+    document.getElementById('preview-price').innerText = `₱${product.price.toFixed(2)}`;
+
+    const existingItem = cart.find(item => item.id === productId);
+    document.getElementById('preview-qty-value').innerText = existingItem ? existingItem.quantity : 0;
+
+    modal.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+}
+
+function closeProductPreview() {
+    const modal = document.getElementById('product-preview-modal');
+    if (!modal) return;
+
+    modal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    activePreviewProductId = null;
+}
+
+function updatePreviewQty(delta) {
+    if (!activePreviewProductId) return;
+
+    const existingItem = cart.find(item => item.id === activePreviewProductId);
+    if (!existingItem && delta < 0) return;
+
+    if (existingItem) {
+        updateQty(activePreviewProductId, delta);
+    } else if (delta > 0) {
+        addToCart(activePreviewProductId);
+    }
+
+    const updatedItem = cart.find(item => item.id === activePreviewProductId);
+    document.getElementById('preview-qty-value').innerText = updatedItem ? updatedItem.quantity : 0;
+}
+
+function addActivePreviewToCart() {
+    if (!activePreviewProductId) return;
+    addToCart(activePreviewProductId);
+    const updatedItem = cart.find(item => item.id === activePreviewProductId);
+    document.getElementById('preview-qty-value').innerText = updatedItem ? updatedItem.quantity : 0;
+}
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeProductPreview();
+});
