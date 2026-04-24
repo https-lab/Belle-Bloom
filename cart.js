@@ -36,6 +36,7 @@ const burgerBtn = document.querySelector('.burger-btn');
 const navEl = document.querySelector('.header-main nav');
 
 let activePreviewProductId = null;
+let previewQuantity = 1;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -109,7 +110,7 @@ function updateCartUI() {
     });
 }
 
-function addToCart(productId) {
+function addToCart(productId, quantity = 1, showMessage = true) {
     if (!currentUser) {
         showNotification('Please log in first to add products to your cart.', 'warning');
         setTimeout(() => window.location.href = 'login.html', 1500);
@@ -120,14 +121,17 @@ function addToCart(productId) {
     const existingItem = cart.find(item => item.id === productId);
 
     if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += quantity;
     } else {
-        cart.push({ ...product, quantity: 1 });
+        cart.push({ ...product, quantity });
     }
 
     saveCart();
     updateCartUI();
-    showNotification(`${product.name} added to cart!`);
+    if (showMessage) {
+        const qtyText = quantity > 1 ? `${quantity}x ` : '';
+        showNotification(`${qtyText}${product.name} added to cart!`);
+    }
 }
 
 function saveCart() {
@@ -365,8 +369,8 @@ function openProductPreview(productId) {
     document.getElementById('preview-name').innerText = product.name;
     document.getElementById('preview-price').innerText = `₱${product.price.toFixed(2)}`;
 
-    const existingItem = cart.find(item => item.id === productId);
-    document.getElementById('preview-qty-value').innerText = existingItem ? existingItem.quantity : 0;
+    previewQuantity = 1;
+    document.getElementById('preview-qty-value').innerText = previewQuantity;
 
     modal.classList.remove('hidden');
     document.body.classList.add('modal-open');
@@ -379,29 +383,21 @@ function closeProductPreview() {
     modal.classList.add('hidden');
     document.body.classList.remove('modal-open');
     activePreviewProductId = null;
+    previewQuantity = 1;
 }
 
 function updatePreviewQty(delta) {
     if (!activePreviewProductId) return;
-
-    const existingItem = cart.find(item => item.id === activePreviewProductId);
-    if (!existingItem && delta < 0) return;
-
-    if (existingItem) {
-        updateQty(activePreviewProductId, delta);
-    } else if (delta > 0) {
-        addToCart(activePreviewProductId);
-    }
-
-    const updatedItem = cart.find(item => item.id === activePreviewProductId);
-    document.getElementById('preview-qty-value').innerText = updatedItem ? updatedItem.quantity : 0;
+    previewQuantity = Math.max(1, previewQuantity + delta);
+    document.getElementById('preview-qty-value').innerText = previewQuantity;
 }
 
 function addActivePreviewToCart() {
     if (!activePreviewProductId) return;
-    addToCart(activePreviewProductId);
-    const updatedItem = cart.find(item => item.id === activePreviewProductId);
-    document.getElementById('preview-qty-value').innerText = updatedItem ? updatedItem.quantity : 0;
+
+    addToCart(activePreviewProductId, previewQuantity, true);
+
+    closeProductPreview();
 }
 
 document.addEventListener('keydown', (event) => {
